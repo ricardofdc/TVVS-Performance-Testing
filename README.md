@@ -72,6 +72,8 @@ $ locust
 [2021-12-06 16:08:50,357] .../INFO/locust.main: Starting Locust 2.5.0
 ````
 
+> If you want to run locust with other files you can run the command `locust -f <file_name>.py`
+
 ### Locust's web interface
 
 Once you’ve started Locust, open up a browser and point it to http://localhost:8089. You will be greeted with something like this:
