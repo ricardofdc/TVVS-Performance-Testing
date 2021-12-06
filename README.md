@@ -62,7 +62,7 @@ class HelloWorldUser(HttpUser):
         self.client.get("/world")
 ````
 
-This user will make HTTP requests to /hello, and then /world, again and again. 
+This user will make HTTP requests to `/hello`, and then `/world`, again and again. 
 
 Put the code in a file named *`locustfile.py`* in your current directory and run `locust`:
 
@@ -89,7 +89,7 @@ Locust can also visualize the results as charts, showing things like requests pe
 ![Test1 Total Requests per Second](img/test1_trps.png)
 > Note:   
 > Interpreting performance test results can be quite complex.  
-> In this graph above we can see that this server has a bottleneck of around 18 `HelloWorldUsers`, performing around 2.1 requests per second.
+> In this graph above we can see that this server has a bottleneck of around 18 *HelloWorldUsers*, performing around 2.1 requests per second.
 
 Response times (in milliseconds):
 
