@@ -76,7 +76,32 @@ $ locust
 
 Once you’ve started Locust, open up a browser and point it to http://localhost:8089. You will be greeted with something like this:
 
-![Locust's web ui](img/webui-splash-screenshot.png)
+![Locust's web ui](img/home_page.png)
+
+Point the test at our simple Python web server and try it out!
+
+The following screenshots show what it might look like when running this test targeting 50 concurrent users with a ramp up speed of 1 users/s.
+
+![Test1 statistics](img/test1_statistics.png)
+
+Locust can also visualize the results as charts, showing things like requests per second (RPS):
+
+![Test1 Total Requests per Second](img/test1_trps.png)
+> Note:   
+> Interpreting performance test results can be quite complex.  
+> In this graph above we can see that this server has a bottleneck of around 18 `HelloWorldUsers`, performing around 2.1 requests per second.
+
+Response times (in milliseconds):
+
+![Test1 Response Times](img/test1_rt.png)
+
+Number of users:
+
+![Test1 Number of Users](img/test1_nou.png)
+
+## 2. Writing a locustfile
+
+
 
 # References
 
