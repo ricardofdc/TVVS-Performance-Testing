@@ -10,13 +10,19 @@ This makes Locust infinitely expandable and very developer friendly.
 
 ## Installation Guide
 
+Clone this repository:
+
+````
+$ git clone https://github.com/ricardofdc/TVVS-Performance-Testing.git
+````
+
 [Install Python](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it.
 
 Install Locust:
 
-```
+````
 $ pip3 install locust
-```
+````
 
 You may need to run the command as admin or with the `--user` flag.  
 Validate your installation. If this doesn't work, [check the Locust's wiki](https://github.com/locustio/locust/wiki/Installation) for some possible solutions.
