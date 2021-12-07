@@ -10,27 +10,70 @@ This makes Locust infinitely expandable and very developer friendly.
 
 # Installation Guide
 
-Clone this repository:
-
-```` shell
-$ git clone https://github.com/ricardofdc/TVVS-Performance-Testing.git
-````
+### 1. Install Python
 
 [Install Python](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it.
 
-Install Locust:
+### 2. Clone this repo
 
-```` shell
-$ pip3 install locust
-````
+```bash
+# clone the repo
+git clone https://github.com/ricardofdc/TVVS-Performance-Testing.git
+# change directory to project root
+cd TVVS-Performance-Testing
+```
+
+### 3. Create python virtual environment
+
+It is recommended to start a [python virtual environment](https://docs.python.org/3/tutorial/venv.html) to avoid problems with system dependencies:
+
+```bash
+# creating the environment (inside project root)
+python3 -m venv env
+```
+
+Now it is important to activate the environment:
+
+```bash
+# UNIX & MaCOS
+source env/bin/activate
+# WINDOWS
+env\Scripts\activate.bat
+```
+
+To make sure everything went well, try te following commands
+
+```bash
+which python
+# the result should be something like this:
+# /home/.../TVVS-Performance-Testing/env/bin/python
+```
+
+After you're done working on this project, simply run the following command to quit out of the virtual environment:
+
+```bash
+deactivate
+```
+
+### 4. Install Locust and other dependencies
+
+Use pip to install project requirements on your virtual environment
+
+```bash
+pip install -r requirements.txt
+```
+
+Make sure that `locust` is installed and working:
+
+```bash
+locust -V
+# locust 2.5.0
+which locust
+# /home/.../TVVS-Performance-Testing/env/bin/locust
+```
 
 You may need to run the command as admin or with the `--user` flag.  
 Validate your installation. If this doesn't work, [check the Locust's wiki](https://github.com/locustio/locust/wiki/Installation) for some possible solutions.
-
-```` shell
-$ locust -V
-locust 2.5.0
-````
 
 Great! Now we're ready to create our first test.
 
