@@ -8,9 +8,11 @@ serverPort = 8080
 
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
-        #time.sleep(0.5) # really bad server
-        if random.randrange(1,10) == 1:
-            raise Exception("oi")
+        # bad route
+        if (self.path == '/route3'):
+            time.sleep(0.5)
+
+        # reply normally
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
