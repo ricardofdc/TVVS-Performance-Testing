@@ -1,6 +1,6 @@
 from locust import FastHttpUser, LoadTestShape, task, constant
 
-class PeakStagesShape(LoadTestShape):
+class LoadStagesShape(LoadTestShape):
     """
     A simply load test shape class that has different user and spawn_rate at
     different stages.
@@ -12,15 +12,9 @@ class PeakStagesShape(LoadTestShape):
     """
 
     stages = [
-        {"duration": 45, "users": 5, "spawn_rate": 100},    # 0   - 45
-        {"duration": 60, "users": 100, "spawn_rate": 100},  # 45  - 60  - peak
-        {"duration": 105, "users": 5, "spawn_rate": 100},   # 60  - 105
-        {"duration": 120, "users": 100, "spawn_rate": 100}, # 105 - 120 - peak
-        {"duration": 165, "users": 5, "spawn_rate": 100},   # 120 - 165
-        {"duration": 180, "users": 100, "spawn_rate": 100}, # 165 - 180 - peak
-        {"duration": 225, "users": 5, "spawn_rate": 100},   # 180 - 225
-        {"duration": 240, "users": 100, "spawn_rate": 100}, # 225 - 240 - peak
-        {"duration": 285, "users": 5, "spawn_rate": 100},   # 240 - 285
+        {"duration": 20, "users": 5, "spawn_rate": 10},    # 0   - 20
+        {"duration": 140, "users": 100, "spawn_rate": 10}, # 20  - 140
+        {"duration": 160, "users": 5, "spawn_rate": 10},   # 140 - 160
     ]
 
     def __init__(self):
