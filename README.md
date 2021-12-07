@@ -4,7 +4,7 @@
 
 Locust is an easy to use, scriptable and scalable performance testing tool.
 
-You define the behaviour of your users in regular Python code, instead of being stuck in a UI or restrictive domain specific language.
+You define the behavior of your users in regular Python code, instead of being stuck in a UI or restrictive domain specific language.
 
 This makes Locust infinitely expandable and very developer friendly.
 
@@ -17,6 +17,7 @@ This makes Locust infinitely expandable and very developer friendly.
 ```bash
 # for Ubuntu/Debian
 sudo apt-get install python3 python3-dev
+
 # for fedora
 sudo dnf install python3 python3-devel
 ```
@@ -26,6 +27,7 @@ sudo dnf install python3 python3-devel
 ```bash
 # clone the repo
 git clone https://github.com/ricardofdc/TVVS-Performance-Testing.git
+
 # change directory to project root
 cd TVVS-Performance-Testing
 ```
@@ -44,6 +46,7 @@ Now it is important to activate the environment:
 ```bash
 # UNIX & MaCOS
 source env/bin/activate
+
 # WINDOWS
 env\Scripts\activate.bat
 ```
@@ -84,18 +87,18 @@ Validate your installation. If this doesn't work, [check the Locust's wiki](http
 
 Great! Now we're ready to create our first test.
 
-# Tutorial
+# Exercises
 
-We developed a very simple Python server for you to run locally, in order to perform the first test. Run this command in order to start that server:
+We developed a very simple Python server for you to run locally, in order to perform the first exercise. Run this command in order to start that server:
 
-```` shell
-$ py server
+```` bash
+python server
 ````
 
-Then, to do this tutorial open a new terminal and run this command to change to the `tutorial` folder:
+Then, to do these exercises open a new terminal and run this command to change to the `exercises` folder:
 
-```` shell
-$ cd tutorial
+```` bash
+cd exercises
 ````
 
 ## 1. Getting started
@@ -116,10 +119,10 @@ This user will make HTTP requests to `/hello`, and then `/world`, again and agai
 
 Put the code in a file named *`locustfile.py`* in your current directory and run `locust`:
 
-```` shell
-$ locust
-[2021-12-06 16:08:50,336] .../INFO/locust.main: Starting web interface at http://0.0.0.0:8089
-[2021-12-06 16:08:50,357] .../INFO/locust.main: Starting Locust 2.5.0
+```` bash
+locust
+# [2021-12-06 16:08:50,336] .../INFO/locust.main: Starting web interface at http://0.0.0.0:8089
+# [2021-12-06 16:08:50,357] .../INFO/locust.main: Starting Locust 2.5.0
 ````
 
 > If you want to run locust with other files you can run the command `locust -f <file_name>.py`
@@ -139,9 +142,6 @@ The following screenshots show what it might look like when running this test ta
 Locust can also visualize the results as charts, showing things like requests per second (RPS):
 
 ![Test1 Total Requests per Second](img/test1_trps.png)
-> Note:   
-> Interpreting performance test results can be quite complex.  
-> In this graph above we can see that this server has a bottleneck of around 18 *HelloWorldUsers*, performing around 2.1 requests per second.
 
 Response times (in milliseconds):
 
@@ -151,9 +151,62 @@ Number of users:
 
 ![Test1 Number of Users](img/test1_nou.png)
 
-## 2. Writing a locustfile
+## 2. Test E-Commerce System
+
+An e-commerce system has launched about a week ago (https://www.demoblaze.com/), and after the first week the following data was collected:
+
+- Average online users: **50**
+- Average requests per second: **30**
+
+**System Requirements**
+
+The owner of this system told us that it has the following non-functional performance requirements:
+
+**1.** The system must successfully answer at least 98% of incoming requests.
+
+<details>
+    <summary>💡 Hint</summary>
+    A simple load test with the system collected data should suffice
+</details>
 
 
+---
+
+**2.** During black-friday (which lasts for 24 hours) the system's usage is expected to grow 100% (100 online users and about 60 requests per second). During this time, the system much reply successfully to at least 95% of incoming requests.
+
+<details>
+    <summary>💡 Hint</summary>
+    Look at the slides and try to draw a RPS curve that resembles a stress testing curve!
+</details>
+
+---
+
+**3.** Besides black friday, the store also does flash sales that last about 1 hour. These flash days usually happen 6 times a day and causes the website's activity to grow 200% during these hours.
+
+<details>
+    <summary>💡 Hint</summary>
+    Maybe try a peak testing approach!
+</details>
+
+However the owner is not entirely sure that these requirements are met. For each non-functional requirement, write a performance test using the locust library.
+
+You can find hints after each requirement and a step-by-step guide bellow to help you if you want!
+
+### 2.1. Load Test
+
+>WIP - We are working on the best guides
+
+### 2.2. Stress Test
+
+>WIP - We are working on the best guides
+
+### 2.3. Peak Test
+
+>WIP - We are working on the best guides
+
+### 2.4. Breakpoint Test
+
+>WIP - We are working on the best guides
 
 # References
 
