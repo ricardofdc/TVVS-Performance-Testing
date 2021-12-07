@@ -32,7 +32,7 @@ git clone https://github.com/ricardofdc/TVVS-Performance-Testing.git
 cd TVVS-Performance-Testing
 ```
 
-### 3. Create python virtual environment
+### 3. Create python virtual environment (optional)
 
 It is recommended to start a [python virtual environment](https://docs.python.org/3/tutorial/venv.html) to avoid problems with system dependencies:
 
