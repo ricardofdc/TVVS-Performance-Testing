@@ -162,49 +162,49 @@ An e-commerce system has launched about a week ago (https://www.demoblaze.com/),
 
 The owner of this system told us that it has the following non-functional performance requirements:
 
-**1.** The system must successfully answer at least 98% of incoming requests.
+**1.** The system must successfully answer at least 98% of incoming requests during an average load.
 
 <details>
     <summary>💡 Hint</summary>
-    A simple load test with the system collected data should suffice
+    A simple load test with the system collected data should be enough.
 </details>
 
 
 ---
 
-**2.** During black-friday (which lasts for 24 hours) the system's usage is expected to grow 100% (100 online users and about 60 requests per second). During this time, the system much reply successfully to at least 95% of incoming requests.
+**2.** During black-friday (which lasts for 24 hours) the system's usage is expected to grow 100% (100 online users and about 60 requests per second). During this time, the system should reply successfully to at least 95% of incoming requests.
 
 <details>
     <summary>💡 Hint</summary>
-    Look at the slides and try to draw a RPS curve that resembles a stress testing curve!
+    Look at the slides and try to develop a test capable of drawing a Requests per Second (RPS) curve that resembles a stress testing curve!
 </details>
 
 ---
 
-**3.** Besides black friday, the store also does flash sales that last about 1 hour. These flash days usually happen 6 times a day and causes the website's activity to grow 200% during these hours.
+**3.** Besides black friday, the store also does some flash sales that last about 1 hour. These flash sales usually happen 6 times a month and causes the website's activity to grow 300%. During this time the system should be able to reply successfully to 90% of incoming requests.
 
 <details>
     <summary>💡 Hint</summary>
-    Maybe try a peak testing approach!
+    In this case developing a peak test may be the best testing approach!
 </details>
 
-However the owner is not entirely sure that these requirements are met. For each non-functional requirement, write a performance test using the locust library.
+However the owner is not entirely sure that these requirements are met and needs you to test them. For each non-functional requirement, write a performance test using the locust library.
 
 You can find hints after each requirement and a step-by-step guide bellow to help you if you want!
 
-### 2.1. Load Test
+### 2.1. Load Test Guide
 
 >WIP - We are working on the best guides
 
-### 2.2. Stress Test
+### 2.2. Stress Test Guide
 
 >WIP - We are working on the best guides
 
-### 2.3. Peak Test
+### 2.3. Peak Test Guide
 
 >WIP - We are working on the best guides
 
-### 2.4. Breakpoint Test
+### 2.4. Breakpoint Test Guide
 
 >WIP - We are working on the best guides
 
