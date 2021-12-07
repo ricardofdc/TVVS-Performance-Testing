@@ -12,7 +12,14 @@ This makes Locust infinitely expandable and very developer friendly.
 
 ### 1. Install Python
 
-[Install Python](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it.
+[Install Python](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it. Also install `pip`.
+
+```bash
+# foe Ubuntu/Debian
+sudo apt-get install python3 python3-dev
+# for fedora
+sudo dnf install python3 python3-devel
+```
 
 ### 2. Clone this repo
 
