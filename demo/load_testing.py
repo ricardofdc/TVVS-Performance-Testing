@@ -1,35 +1,28 @@
 from locust import FastHttpUser, LoadTestShape, task, constant
 
 class LoadStagesShape(LoadTestShape):
-    """
-    A simply load test shape class that has different user and spawn_rate at
-    different stages.
-    Keyword arguments:
-        stages -- A list of dicts, each representing a stage with the following keys:
-            duration -- When this many seconds pass the test is advanced to the next stage
-            users -- Total user count
-            spawn_rate -- Number of users to start/stop per second
-    """
+    # test will run for 120 seconds
+    time_limit = 120
+    # max number of users
+    max_users = 30
+    # curve starts going down after 100 seconds
+    end_load =  100
+    # Number of users to start/stop per second
+    spawn_rate = 5
 
-    stages = [
-        {"duration": 20, "users": 5, "spawn_rate": 10},    # 0   - 20
-        {"duration": 140, "users": 100, "spawn_rate": 10}, # 20  - 140
-        {"duration": 160, "users": 5, "spawn_rate": 10},   # 140 - 160
-    ]
 
     def __init__(self):
-
         super().__init__()
 
     def tick(self):
-        run_time = self.get_run_time()
+        run_time = round(self.get_run_time())
 
-        for stage in self.stages:
-            if run_time < stage["duration"]:
-                tick_data = (stage["users"], stage["spawn_rate"]) # spawn rate is always 100
-                return tick_data
+        user_count = self.max_users if run_time < self.end_load else 0
 
-        return None
+        if run_time < self.time_limit:
+            return (user_count, self.spawn_rate)
+        else:
+            return None
 
 class PeakUser(FastHttpUser):
     # wait 0.5 seconds

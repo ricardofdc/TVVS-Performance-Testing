@@ -12,7 +12,7 @@ This makes Locust infinitely expandable and very developer friendly.
 
 ### 1. Install Python
 
-[Install Python](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it. Also install `pip`.
+[Install `Python`](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it.
 
 ```bash
 # for Ubuntu/Debian
@@ -20,6 +20,13 @@ sudo apt-get install python3 python3-dev
 
 # for fedora
 sudo dnf install python3 python3-devel
+```
+
+[`pip`](https://pip.pypa.io/en/stable/installation/) usually comes bundled with Python, but make sure you have it installed anyway.
+
+```bash
+pip -V
+# pip 21.2.4 from /home/.../python3.X/site-packages/pip (python 3.X)
 ```
 
 ### 2. Clone this repo
@@ -51,7 +58,7 @@ source env/bin/activate
 env\Scripts\activate.bat
 ```
 
-To make sure everything went well, try te following commands
+To make sure everything went well, try te following command:
 
 ```bash
 which python
@@ -78,8 +85,6 @@ Make sure that `locust` is installed and working:
 ```bash
 locust -V
 # locust 2.5.0
-which locust
-# /home/.../TVVS-Performance-Testing/env/bin/locust
 ```
 
 You may need to run the command as admin or with the `--user` flag.  
@@ -181,11 +186,20 @@ The owner of this system told us that it has the following non-functional perfor
 
 ---
 
-**3.** Besides black friday, the store also does some flash sales that last about 1 hour. These flash sales usually happen 6 times a month and causes the website's activity to grow 300%. During this time the system should be able to reply successfully to 90% of incoming requests.
+**3.** Besides black friday, the store also does some flash sales that last about 1 hour. These flash sales usually happen 6 times a day and causes the website's activity to grow 300%. During this time the system should be able to reply successfully to at least 90% of incoming requests.
 
 <details>
     <summary>💡 Hint</summary>
-    In this case developing a peak test may be the best testing approach!
+    In this case developing a spike test may be the best testing approach!
+</details>
+
+---
+
+**4.** Challenge: Find out when the system stops answering more than 50% of incoming requests!
+
+<details>
+    <summary>💡 Hint</summary>
+    Have you tried looking at breakpoint tests! 🤔
 </details>
 
 However the owner is not entirely sure that these requirements are met and needs you to test them. For each non-functional requirement, write a performance test using the locust library.
