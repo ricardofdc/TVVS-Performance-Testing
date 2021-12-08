@@ -208,9 +208,10 @@ You can find hints after each requirement and a step-by-step guide bellow to hel
 
 ## Exercise guides
 
-Locust offers 2 main classes that can be extended, you can find the documentation here:
-- [HttpUser](http://docs.locust.io/en/stable/writing-a-locustfile.html#httpuser-class) and [FastHttpUser](http://docs.locust.io/en/stable/increase-performance.html)
+Locust offers some classes that can be extended for more configuration, you can find the documentation here:
+- [HttpUser](http://docs.locust.io/en/stable/api.html#httpuser-class) and [FastHttpUser](http://docs.locust.io/en/stable/increase-performance.html)
 - [LoadTestShape](http://docs.locust.io/en/stable/custom-load-shape.html)
+- [TaskSet](http://docs.locust.io/en/stable/api.html#taskset-class) and [SequentialTaskSet](http://docs.locust.io/en/stable/api.html#sequentialtaskset-class)
 
 ```Python
 from locust import LoadTestShape, FastHttpUser, task, constant, between
