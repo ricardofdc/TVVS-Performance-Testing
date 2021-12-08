@@ -33,15 +33,15 @@ class LoadStagesShape(LoadTestShape):
 class ApiUser(FastHttpUser):
     # wait 0.5 seconds
     wait_time = between(1, 2)
-    host = 'https://api.demoblaze.com'
+    my_host = 'https://api.demoblaze.com'
 
     @task
     def test_login(self):
-        self.client.post("/login", json={"username": "cenas", "password": "cenas"})
+        self.client.post(f"{self.my_host}/login", json={"username": "cenas", "password": "cenas"})
 
     @task
     def test_signup(self):
-        self.client.post("/signup", json=self.generate_random_user())
+        self.client.post(f"{self.my_host}/signup", json=self.generate_random_user())
 
     def generate_random_user(self):
         return {
@@ -52,16 +52,16 @@ class ApiUser(FastHttpUser):
 class StorefrontUser(FastHttpUser):
     # wait 0.5 seconds
     wait_time = constant(0.5)
-    host = 'https://demoblaze.com'
+    my_host = 'https://demoblaze.com'
 
     @task
     def test_root(self):
-        self.client.get("/")
+        self.client.get(f"{self.my_host}/")
 
     # this task will be 5 times more likely to be chosen
     @task(5)
     def test_root(self):
         # item IDs between 1 and 15
         item_id = random.randint(1, 15)
-        self.client.get(f'/prod.html?idp_={item_id}')
+        self.client.get(f"{self.my_host}/prod.html?idp_={item_id}")
 
