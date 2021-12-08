@@ -1,5 +1,33 @@
 # TVVS - Performance Testing
 
+- Gonçalo Marantes - up201706917@edu.fe.up.pt
+- Ricardo Cardoso - up201604686@edu.fe.up.pt
+- Tiago Silva - up201705985@edu.fe.up.pt
+# Index
+
+- [What is Locust?](#what-is-locust)
+- [Installation Guide](#installation-guide)
+    - [1. Install Python](#1-install-python)
+    - [2. Clone our repository](#2-clone-our-repository)
+    - [3. Create python virtual environment (optional)](#3-create-python-virtual-environment-optional)
+    - [4. Install Locust and other dependencies](#4-install-locust-and-other-dependencies)
+- [Exercises](#exercises)
+    - [1. Getting started](#1-getting-started)
+        - [1.1 Creating tasks](#11-creating-tasks)
+        - [1.2 Creating Users (threads)](#12-creating-users-threads)
+        - [1.3 Creating Test Shapes](#13-creating-test-shapes)
+        - [1.4 Wrapping it up all together](#14-wrapping-it-up-all-together)
+    - [2. Locust's web interface](#2-locusts-web-interface)
+    - [3. Test E-Commerce System](#3-test-e-commerce-system)
+        - [3.1 System Requirements](#31-system-requirements)
+        - [3.2 Challenge](#32-challenge)
+- [Exercise Guides](#exercise-guides)
+    - [1. Define users behaviour](#1-define-users-behaviour)
+    - [2. Load Test Guide](#2-load-test-guide)
+    - [3. Stress Test Guide](#3-stress-test-guide)
+    - [4. Spike Test Guide](#4-spike-test-guide)
+    - [5. Breakpoint Test Guide](#5-breakpoint-test-guide)
+
 # What is Locust?
 
 Locust is an easy to use, scriptable and scalable performance testing tool.
@@ -10,7 +38,7 @@ This makes Locust infinitely expandable and very developer friendly.
 
 # Installation Guide
 
-### 1. Install Python
+## 1. Install Python
 
 [Install `Python`](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it.
 
@@ -29,7 +57,9 @@ pip -V
 # pip 21.2.4 from /home/.../python3.X/site-packages/pip (python 3.X)
 ```
 
-### 2. Clone this repo
+## 2. Clone our repository
+
+Clone [this](https://github.com/ricardofdc/TVVS-Performance-Testing) GitHub repository, with the following command:
 
 ```bash
 # clone the repo
@@ -39,13 +69,36 @@ git clone https://github.com/ricardofdc/TVVS-Performance-Testing.git
 cd TVVS-Performance-Testing
 ```
 
-### 3. Create python virtual environment (optional)
+## 3. Create python virtual environment (optional)
 
-It is recommended to start a [python virtual environment](https://docs.python.org/3/tutorial/venv.html) to avoid problems with system dependencies:
+It is recommended to start a [python virtual environment](https://docs.python.org/3/tutorial/venv.html) to avoid problems with system dependencies. However, this is optional and everything should work fine either way.
 
 ```bash
-# creating the environment (inside project root)
+# creating the environment (inside project root folder)
 python3 -m venv env
+```
+
+Now your project folder will look something like this:
+
+```
+.
+├── demo
+│  └── ...
+├── env <- NOTICE THIS FOLDER!
+│  ├── bin
+│  ├── include
+│  ├── lib
+│  ├── lib64 ⇒ lib
+│  └── pyvenv.cfg
+├── exercises
+│  └── locustfile.py
+├── img
+│  └── ...
+├── install.md
+├── README.md
+├── requirements.txt
+└── server
+   └── __main__.py
 ```
 
 Now it is important to activate the environment:
@@ -58,7 +111,7 @@ source env/bin/activate
 env\Scripts\activate.bat
 ```
 
-To make sure everything went well, try te following command:
+To make sure everything went well, try te following command (UNIX only):
 
 ```bash
 which python
@@ -72,7 +125,7 @@ After you're done working on this project, simply run the following command to q
 deactivate
 ```
 
-### 4. Install Locust and other dependencies
+## 4. Install Locust and other dependencies
 
 Use pip to install project requirements on your virtual environment
 
@@ -92,6 +145,7 @@ Validate your installation. If this doesn't work, [check the Locust's wiki](http
 
 Great! Now we're ready to create our first test.
 
+
 # Exercises
 
 We developed a very simple Python server for you to run locally, in order to perform the first exercise. Run this command in order to start that server:
@@ -108,21 +162,116 @@ cd exercises
 
 ## 1. Getting started
 
-A Locust test is essentially a Python program. This makes it very flexible and particularly good at implementing complex user flows. But it can do simple tests as well, so lets start with that:
+A Locust test is essentially a Python program. This makes it very flexible and particularly good at implementing complex user flows. But it can do simple tests as well, so lets start with that.
+
+### 1.1 Creating tasks
+
+Lets define the tasks that the User will perform in this service:
 
 ```` py
-from locust import HttpUser, task
+from locust import TaskSet, HttpUser, constant
+from tasks import DemoBlazeUserUserTaskSet
+import time
 
-class HelloWorldUser(HttpUser):
+class MyUserTaskSet(TaskSet):
+
+    # A method with the name "on_start" will be called for each 
+    # simulated user when they start.
+    def on_start(self):
+        self.client.post("/login", json={"username":"foo", "password":"bar"})
+
+    # Methods decorated with @task are the core of your locust file. 
+    # For every running user, Locust creates a greenlet (micro-thread), 
+    # that will call those methods.
     @task
     def hello_world(self):
         self.client.get("/hello")
         self.client.get("/world")
+
+    @task
+    def slow(self):
+        self.client.get("/slow")
+
+    @task(3)
+    def view_items(self):
+        # Here we will load 10 different URLs by using a variable query 
+        # parameter. In order to not get 10 separate entries in Locust's 
+        # statistics we use the name parameter to group all those requests 
+        # under an entry named "/item" instead.
+        for item_id in range(10):
+            self.client.get(f"/item?id={item_id}", name="/item")
+            time.sleep(1)
+
 ````
 
-This user will make HTTP requests to `/hello`, and then `/world`, again and again. 
+We’ve declared two tasks by decorating two methods with `@task`, one of which has been given a higher weight (3). When our `MyUser` runs it’ll pick one of the declared tasks - in this case either `hello_world` or `view_items` - and execute it. Tasks are picked at random, but you can give them different weighting. The above configuration will make Locust three times more likely to pick `view_items` than `hello_world`. When a task has finished executing, the User will then sleep during it’s wait time (we will talk about this later). After it’s wait time it’ll pick a new task and keep repeating that.
 
-Put the code in a file named *`locustfile.py`* in your current directory and run `locust`:
+### 1.2 Creating Users (threads)
+
+Now lets create a new kind of user, that will send request to `localhost:8080`:
+
+```` py
+class MyUser(HttpUser):
+    # default host
+    host = "http://localhost:8080"
+    
+    # Here we will define the waiting time between the user's tasks
+    #
+    # With `wait_time` = constant(0.5) this user will execute 
+    # its tasks with constant interval of 0.5 seconds between each
+    # task.
+    #
+    # Another way we can specify the wait time is with
+    # between(). With `wait_time` = between(1, 5), the user
+    # will execute its tasks with a random interval between 1
+    # and 5 seconds.
+    wait_time = constant(0.5)
+
+    # The tasks array defines the tasks that will be executed
+    # by this user. In this case, the array as an element which
+    # is an instance of MyUserTaskSet. So this user will execute
+    # the tasks defined in the MyUserTaskSet class
+    tasks = [MyUserTaskSet]
+````
+
+Further information about the Users class can be found [here](http://docs.locust.io/en/stable/writing-a-locustfile.html#user-class)
+
+### 1.3 Creating Test Shapes
+
+Now that we have created our tasks and users, we need to create the shape of our test curve. Depending on the type of test we want to perform (load, spike, endurance, etc.) we need to configure a custom shape.
+
+Let's a look at a very basic example:
+
+```python
+class MyLoadTestShape(LoadTestShape):
+    # the duration of the test
+    time_limit = 60
+    # max number of users
+    max_users = 50
+    # Number of users to start/stop per second
+    spawn_rate = 5
+
+    # the tick() method returns either:
+    #  - a tuple containing:
+    #     1. maximum number of users
+    #     2. user spawn or de-spawn rate (users per second)
+    #  - None, ending the test
+    # This method is called approximately every second.
+    def tick(self):
+        # get time elapsed (in seconds)
+        run_time = round(self.get_run_time())
+
+        # check if time limit has been reached
+        if run_time < self.time_limit:
+            return (self.max_users, self.spawn_rate)
+        else:
+            return None
+```
+
+In this example, for every instance of the test there will be a maximum number of 50 users, which increase at a rate of 5 users per second. So in the beginning of the test there are 0 users, after 10 seconds, there are 50 users. And since this method returns None after 60 seconds, than the test will automatically stop.
+### 1.4 Wrapping it up all together
+
+Place all this the code in a file named `locustfile.py` in your current directory and run `locust`:
 
 ```` bash
 locust
@@ -130,40 +279,45 @@ locust
 # [2021-12-06 16:08:50,357] .../INFO/locust.main: Starting Locust 2.5.0
 ````
 
-> If you want to run locust with other files you can run the command `locust -f <file_name>.py`
+If you want to run locust with other files you can run the command:
 
-### Locust's web interface
+```bash
+locust -f <file_name>.py
+```
+
+## 2. Locust's web interface
 
 Once you’ve started Locust, open up a browser and point it to http://localhost:8089. You will be greeted with something like this:
 
-![Locust's web ui](img/home_page.png)
+![Locust's web ui](docs/img/home_page.png)
 
 Point the test at our simple Python web server and try it out!
 
 The following screenshots show what it might look like when running this test targeting 50 concurrent users with a ramp up speed of 1 users/s.
 
-![Test1 statistics](img/test1_statistics.png)
+![Test1 statistics](docs/img/test1_statistics.png)
 
 Locust can also visualize the results as charts, showing things like requests per second (RPS):
 
-![Test1 Total Requests per Second](img/test1_trps.png)
+![Test1 Total Requests per Second](docs/img/test1_trps.png)
 
 Response times (in milliseconds):
 
-![Test1 Response Times](img/test1_rt.png)
+![Test1 Response Times](docs/img/test1_rt.png)
 
 Number of users:
 
-![Test1 Number of Users](img/test1_nou.png)
+![Test1 Number of Users](docs/img/test1_nou.png)
 
-## 2. Test E-Commerce System
+## 3. Test E-Commerce System
 
 An e-commerce system has launched about a week ago (https://www.demoblaze.com/), and after the first week the following data was collected:
 
 - Average online users: **50**
 - Average requests per second: **30**
+- The average user's behaviour is already set up for you in `exercises/tasks.py`, but feel free to change it.
 
-**System Requirements**
+### 3.1 System Requirements
 
 The owner of this system told us that it has the following non-functional performance requirements:
 
@@ -195,63 +349,48 @@ The owner of this system told us that it has the following non-functional perfor
 
 ---
 
-**4.** Challenge: Find out when the system stops answering more than 50% of incoming requests!
-
-<details>
-    <summary>💡 Hint</summary>
-    Have you tried looking at breakpoint tests! 🤔
-</details>
 
 However the owner is not entirely sure that these requirements are met and needs you to test them. For each non-functional requirement, write a performance test using the locust library.
 
-You can find hints after each requirement and a step-by-step guide bellow to help you if you want!
+You can find hints after each requirement and a guide to some of the tasks bellow to help you if you want!
 
-## Exercise guides
+
+### 3.2 Challenge
+
+Find out when the system stops answering more than 50% of incoming requests!
+
+# Exercise guides
+
+## 1. Define users behaviour
+
+Before starting our tests we must define the behaviour that a normal user would have in this service.
+
+Lets start by creating a file named `user.py`.
+
+In this file create a [FastHttpUser](http://docs.locust.io/en/stable/increase-performance.html):
+
+```python
+from locust import FastHttpUser
+
+class MyUser(FastHttpUser):
+    # default host (don't change please)
+    host = "https://demoblaze.com"
+
+    # what tasks will MyUser be doing
+    tasks = [UserTaskSet]
+```
+
+
+
+
 
 Locust offers some classes that can be extended for more configuration, you can find the documentation here:
 - [HttpUser](http://docs.locust.io/en/stable/api.html#httpuser-class) and [FastHttpUser](http://docs.locust.io/en/stable/increase-performance.html)
 - [LoadTestShape](http://docs.locust.io/en/stable/custom-load-shape.html)
 - [TaskSet](http://docs.locust.io/en/stable/api.html#taskset-class) and [SequentialTaskSet](http://docs.locust.io/en/stable/api.html#sequentialtaskset-class)
 
-```Python
-from locust import LoadTestShape, FastHttpUser, task, constant, between
-from random import randint
 
-class LoadStagesShape(LoadTestShape):
-    """
-    The tick() method that returns
-        - a tuple with the desired user count and spawn rate
-        - or None to stop the tes
-    Locust will call the tick() method approximately once per second.
-    """
-    def tick(self):
-        user_count = 10
-        spawn_rate = 1
-        # user count will ramp up to 10 by increasing
-        # the user_count by 1 user per second
-        return (user_count, spawn_rate)
-
-class PeakUser(FastHttpUser):
-    # PICK THIS -> wait 0.5 seconds between tasks
-    wait_time = constant(0.5)
-    # OR THIS -> wait randomly between 1 and 3 seconds between tasks
-    wait_time = between(1, 3)
-    # where will the requests be sent
-    host = 'https://demoblaze.com'
-
-    @task
-    def test_root(self):
-        self.client.get("/")
-
-    # this task will be 5 times more likely to be chosen
-    @task(5)
-    def test_root(self):
-        # item IDs between 1 and 15
-        item_id = randint(1, 15)
-        self.client.get(f'/prod.html?idp_={item_id}')
-```
-
-### 2.1. Load Test Guide
+## 2. Load Test Guide
 
 ```python
 class LoadStagesShape(LoadTestShape):
@@ -274,11 +413,11 @@ class LoadStagesShape(LoadTestShape):
         else:
             return None
 ```
-### 2.2. Stress Test Guide
+## 3. Stress Test Guide
 
 Same as Load test, just increase the number of users OR decrease the `wait_time` between user tasks.
 
-### 2.3. Spike Test Guide
+## 4. Spike Test Guide
 
 ```python
 class SpikeStagesShape(LoadTestShape):
@@ -304,9 +443,6 @@ class SpikeStagesShape(LoadTestShape):
         {"duration": 285, "users": 5, "spawn_rate": 100},   # 240 - 285
     ]
 
-    def __init__(self):
-        super().__init__()
-
     def tick(self):
         run_time = self.get_run_time()
 
@@ -318,7 +454,14 @@ class SpikeStagesShape(LoadTestShape):
         return None
 ```
 
-### 2.4. Breakpoint Test Guide
+## 5. Breakpoint Test Guide
+
+Challenge: Find out when the system stops answering more than 50% of incoming requests!
+
+<details>
+    <summary>💡 Hint</summary>
+    Have you tried looking at breakpoint tests! 🤔
+</details>
 
 Keep increasing users over time. How about something like this:
 
