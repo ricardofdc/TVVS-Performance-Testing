@@ -206,21 +206,132 @@ However the owner is not entirely sure that these requirements are met and needs
 
 You can find hints after each requirement and a step-by-step guide bellow to help you if you want!
 
+## Exercise guides
+
+Locust offers 2 main classes that can be extended, you can find the documentation here:
+- [HttpUser](http://docs.locust.io/en/stable/writing-a-locustfile.html#httpuser-class) and [FastHttpUser](http://docs.locust.io/en/stable/increase-performance.html)
+- [LoadTestShape](http://docs.locust.io/en/stable/custom-load-shape.html)
+
+```Python
+from locust import LoadTestShape, FastHttpUser, task, constant, between
+from random import randint
+
+class LoadStagesShape(LoadTestShape):
+    """
+    The tick() method that returns
+        - a tuple with the desired user count and spawn rate
+        - or None to stop the tes
+    Locust will call the tick() method approximately once per second.
+    """
+    def tick(self):
+        user_count = 10
+        spawn_rate = 1
+        # user count will ramp up to 10 by increasing
+        # the user_count by 1 user per second
+        return (user_count, spawn_rate)
+
+class PeakUser(FastHttpUser):
+    # PICK THIS -> wait 0.5 seconds between tasks
+    wait_time = constant(0.5)
+    # OR THIS -> wait randomly between 1 and 3 seconds between tasks
+    wait_time = between(1, 3)
+    # where will the requests be sent
+    host = 'https://demoblaze.com'
+
+    @task
+    def test_root(self):
+        self.client.get("/")
+
+    # this task will be 5 times more likely to be chosen
+    @task(5)
+    def test_root(self):
+        # item IDs between 1 and 15
+        item_id = randint(1, 15)
+        self.client.get(f'/prod.html?idp_={item_id}')
+```
+
 ### 2.1. Load Test Guide
 
->WIP - We are working on the best guides
+```python
+class LoadStagesShape(LoadTestShape):
+    # test will run for 120 seconds
+    time_limit = 120
+    # max number of users
+    max_users = 30
+    # curve starts going down after 100 seconds
+    end_load =  100
+    # Number of users to start/stop per second
+    spawn_rate = 5
 
+    def tick(self):
+        run_time = round(self.get_run_time())
+
+        user_count = self.max_users if run_time < self.end_load else 0
+
+        if run_time < self.time_limit:
+            return (user_count, self.spawn_rate)
+        else:
+            return None
+```
 ### 2.2. Stress Test Guide
 
->WIP - We are working on the best guides
+Same as Load test, just increase the number of users OR decrease the `wait_time` between user tasks.
 
-### 2.3. Peak Test Guide
+### 2.3. Spike Test Guide
 
->WIP - We are working on the best guides
+```python
+class SpikeStagesShape(LoadTestShape):
+    """
+    A simply load test shape class that has different user and spawn_rate at
+    different stages.
+    Keyword arguments:
+        stages -- A list of dicts, each representing a stage with the following keys:
+            duration -- When this many seconds pass the test is advanced to the next stage
+            users -- Total user count
+            spawn_rate -- Number of users to start/stop per second
+    """
+
+    stages = [
+        {"duration": 45, "users": 5, "spawn_rate": 100},    # 0   - 45
+        {"duration": 60, "users": 100, "spawn_rate": 100},  # 45  - 60  - peak
+        {"duration": 105, "users": 5, "spawn_rate": 100},   # 60  - 105
+        {"duration": 120, "users": 100, "spawn_rate": 100}, # 105 - 120 - peak
+        {"duration": 165, "users": 5, "spawn_rate": 100},   # 120 - 165
+        {"duration": 180, "users": 100, "spawn_rate": 100}, # 165 - 180 - peak
+        {"duration": 225, "users": 5, "spawn_rate": 100},   # 180 - 225
+        {"duration": 240, "users": 100, "spawn_rate": 100}, # 225 - 240 - peak
+        {"duration": 285, "users": 5, "spawn_rate": 100},   # 240 - 285
+    ]
+
+    def __init__(self):
+        super().__init__()
+
+    def tick(self):
+        run_time = self.get_run_time()
+
+        for stage in self.stages:
+            if run_time < stage["duration"]:
+                tick_data = (stage["users"], stage["spawn_rate"]) # spawn rate is always 100
+                return tick_data
+
+        return None
+```
 
 ### 2.4. Breakpoint Test Guide
 
->WIP - We are working on the best guides
+Keep increasing users over time. How about something like this:
+
+```Python
+class BreakpointShape(LoadTestShape):
+    # max number of users
+    max_users = sys.maxsize
+    # Number of users to start/stop per second
+    spawn_rate = 5
+
+    def tick(self):
+        # no time-limit
+        return (self.max_users, self.spawn_rate)
+```
 
 # References
 
