@@ -33,21 +33,3 @@ class PeakUser(FastHttpUser):
     def test_root(self):
         self.client.get("/")
 
-"""
-    @task
-    def test_route1(self):
-        self.client.get("/route1")
-
-    @task
-    def test_route2(self):
-        self.client.get("/route2")
-
-    @task
-    def test_route3(self):
-        self.client.get("/route3")
-
-    @task
-    def test_route4(self):
-        self.client.get("/route4")
-
-"""
