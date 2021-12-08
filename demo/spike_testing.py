@@ -23,9 +23,6 @@ class SpikeStagesShape(LoadTestShape):
         {"duration": 285, "users": 5, "spawn_rate": 100},   # 240 - 285
     ]
 
-    def __init__(self):
-        super().__init__()
-
     def tick(self):
         run_time = self.get_run_time()
 

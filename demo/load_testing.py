@@ -10,10 +10,6 @@ class LoadStagesShape(LoadTestShape):
     # Number of users to start/stop per second
     spawn_rate = 5
 
-
-    def __init__(self):
-        super().__init__()
-
     def tick(self):
         run_time = round(self.get_run_time())
 
