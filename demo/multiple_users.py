@@ -37,11 +37,11 @@ class ApiUser(FastHttpUser):
 
     @task
     def test_login(self):
-        self.client.post("https://api.demoblaze.com/login", json={"username": "cenas", "password": "cenas"})
+        self.client.post("/login", json={"username": "cenas", "password": "cenas"})
 
     @task
     def test_signup(self):
-        self.client.post("https://api.demoblaze.com/signup", json=self.generate_random_user())
+        self.client.post("/signup", json=self.generate_random_user())
 
     def generate_random_user(self):
         return {
