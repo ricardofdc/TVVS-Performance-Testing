@@ -1,6 +1,6 @@
 from locust import FastHttpUser, LoadTestShape, task, constant
 
-class PeakStagesShape(LoadTestShape):
+class SpikeStagesShape(LoadTestShape):
     """
     A simply load test shape class that has different user and spawn_rate at
     different stages.
@@ -23,10 +23,6 @@ class PeakStagesShape(LoadTestShape):
         {"duration": 285, "users": 5, "spawn_rate": 100},   # 240 - 285
     ]
 
-    def __init__(self):
-
-        super().__init__()
-
     def tick(self):
         run_time = self.get_run_time()
 
@@ -37,7 +33,7 @@ class PeakStagesShape(LoadTestShape):
 
         return None
 
-class PeakUser(FastHttpUser):
+class SpikeUser(FastHttpUser):
     # wait 0.5 seconds
     wait_time = constant(0.5)
     host = 'http://localhost:8080'
@@ -45,22 +41,3 @@ class PeakUser(FastHttpUser):
     @task
     def test_root(self):
         self.client.get("/")
-
-"""
-    @task
-    def test_route1(self):
-        self.client.get("/route1")
-
-    @task
-    def test_route2(self):
-        self.client.get("/route2")
-
-    @task
-    def test_route3(self):
-        self.client.get("/route3")
-
-    @task
-    def test_route4(self):
-        self.client.get("/route4")
-
-"""

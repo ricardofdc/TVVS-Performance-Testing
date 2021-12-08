@@ -9,9 +9,20 @@ serverPort = 8080
 class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
         # bad route
-        if (self.path == '/route3'):
+        if (self.path == '/slow'):
             time.sleep(0.5)
 
+        # reply normally
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        self.wfile.write(bytes("<html><head><title>Python server</title></head>", "utf-8"))
+        self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
+        self.wfile.write(bytes("<body>", "utf-8"))
+        self.wfile.write(bytes("<p>This is an example web server.</p>", "utf-8"))
+        self.wfile.write(bytes("</body></html>", "utf-8"))
+
+    def do_POST(self):
         # reply normally
         self.send_response(200)
         self.send_header("Content-type", "text/html")
