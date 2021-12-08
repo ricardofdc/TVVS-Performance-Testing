@@ -22,11 +22,10 @@
         - [3.1 System Requirements](#31-system-requirements)
         - [3.2 Challenge](#32-challenge)
 - [Exercise Guides](#exercise-guides)
-    - [1. Define users behaviour](#1-define-users-behaviour)
-    - [2. Load Test Guide](#2-load-test-guide)
-    - [3. Stress Test Guide](#3-stress-test-guide)
-    - [4. Spike Test Guide](#4-spike-test-guide)
-    - [5. Breakpoint Test Guide](#5-breakpoint-test-guide)
+    - [1. Load Test Guide](#1-load-test-guide)
+    - [2. Stress Test Guide](#2-stress-test-guide)
+    - [3. Spike Test Guide](#3-spike-test-guide)
+    - [4. Breakpoint Test Guide](#4-breakpoint-test-guide)
 
 # What is Locust?
 
@@ -361,36 +360,7 @@ Find out when the system stops answering more than 50% of incoming requests!
 
 # Exercise guides
 
-## 1. Define users behaviour
-
-Before starting our tests we must define the behaviour that a normal user would have in this service.
-
-Lets start by creating a file named `user.py`.
-
-In this file create a [FastHttpUser](http://docs.locust.io/en/stable/increase-performance.html):
-
-```python
-from locust import FastHttpUser
-
-class MyUser(FastHttpUser):
-    # default host (don't change please)
-    host = "https://demoblaze.com"
-
-    # what tasks will MyUser be doing
-    tasks = [UserTaskSet]
-```
-
-
-
-
-
-Locust offers some classes that can be extended for more configuration, you can find the documentation here:
-- [HttpUser](http://docs.locust.io/en/stable/api.html#httpuser-class) and [FastHttpUser](http://docs.locust.io/en/stable/increase-performance.html)
-- [LoadTestShape](http://docs.locust.io/en/stable/custom-load-shape.html)
-- [TaskSet](http://docs.locust.io/en/stable/api.html#taskset-class) and [SequentialTaskSet](http://docs.locust.io/en/stable/api.html#sequentialtaskset-class)
-
-
-## 2. Load Test Guide
+## 1. Load Test Guide
 
 ```python
 class LoadStagesShape(LoadTestShape):
@@ -413,11 +383,11 @@ class LoadStagesShape(LoadTestShape):
         else:
             return None
 ```
-## 3. Stress Test Guide
+## 2. Stress Test Guide
 
 Same as Load test, just increase the number of users OR decrease the `wait_time` between user tasks.
 
-## 4. Spike Test Guide
+## 3. Spike Test Guide
 
 ```python
 class SpikeStagesShape(LoadTestShape):
@@ -454,7 +424,7 @@ class SpikeStagesShape(LoadTestShape):
         return None
 ```
 
-## 5. Breakpoint Test Guide
+## 4. Breakpoint Test Guide
 
 Challenge: Find out when the system stops answering more than 50% of incoming requests!
 
