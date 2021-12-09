@@ -16,7 +16,7 @@
         - [1.1 Creating tasks](#11-creating-tasks)
         - [1.2 Creating Users (threads)](#12-creating-users-threads)
         - [1.3 Creating Test Shapes](#13-creating-test-shapes)
-        - [1.4 Wrapping it up all together](#14-wrapping-it-up-all-together)
+        - [1.4 Wrapping it up altogether](#14-wrapping-it-up-altogether)
     - [2. Locust's web interface](#2-locusts-web-interface)
     - [3. Test E-Commerce System](#3-test-e-commerce-system)
         - [3.1 System Requirements](#31-system-requirements)
@@ -39,7 +39,7 @@ This makes Locust infinitely expandable and very developer friendly.
 
 ## 1. Install Python
 
-[Install `Python`](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it.
+Install [`Python`](https://docs.python-guide.org/starting/installation/) 3.6 or later, if you don't already have it.
 
 ```bash
 # for Ubuntu/Debian
@@ -82,17 +82,27 @@ Now your project folder will look something like this:
 ```
 .
 ├── demo
-│  └── ...
-├── env <- NOTICE THIS FOLDER!
+│  ├── breakpoint_testing.py
+│  ├── load_testing.py
+│  ├── locustfile.py
+│  ├── spike_testing.py
+│  └── user_task_set.py
+├── docs
+│  ├── img
+│  └── performance-testing-install-guide.pdf
+├── env <- ⚠️ NOTICE THIS FOLDER! ⚠️
 │  ├── bin
 │  ├── include
 │  ├── lib
 │  ├── lib64 ⇒ lib
 │  └── pyvenv.cfg
 ├── exercises
-│  └── locustfile.py
-├── img
-│  └── ...
+│  ├── ex1.py
+│  ├── ex2.py
+│  ├── ex3.py
+│  ├── ex4.py
+│  ├── getting_started.py
+│  └── tasks.py
 ├── install.md
 ├── README.md
 ├── requirements.txt
@@ -110,7 +120,7 @@ source env/bin/activate
 env\Scripts\activate.bat
 ```
 
-To make sure everything went well, try te following command (UNIX only):
+To make sure everything went well, try the following command (UNIX only):
 
 ```bash
 which python
@@ -161,11 +171,11 @@ cd exercises
 
 ## 1. Getting started
 
-A Locust test is essentially a Python program. This makes it very flexible and particularly good at implementing complex user flows. But it can do simple tests as well, so lets start with that.
+A Locust test is essentially a Python program. This makes it very flexible and particularly good at implementing complex user flows. But it can do simple tests as well, so let's start with that.
 
 ### 1.1 Creating tasks
 
-Lets define the tasks that the User will perform in this service:
+Let's define the tasks that the User will perform in this service:
 
 ```` py
 from locust import TaskSet, HttpUser, LoadTestShape, task, constant
@@ -202,11 +212,11 @@ class MyUserTaskSet(TaskSet):
 
 ````
 
-We’ve declared three tasks by decorating three methods with `@task`, one of which has been given a higher weight (3). When our `MyUser` runs it’ll pick one of the declared tasks - in this case either `hello_world` or `view_items` - and execute it. Tasks are picked at random, but you can give them different weighting. The above configuration will make Locust three times more likely to pick `view_items` than `hello_world`. When a task has finished executing, the User will then sleep during it’s wait time (we will talk about this later). After it’s wait time it’ll pick a new task and keep repeating that.
+We’ve declared three tasks by decorating three methods with `@task`, one of which has been given a higher weight (3). When our `MyUser` runs it’ll pick one of the declared tasks - in this case, either `hello_world`, `slow` or `view_items` - and execute it. Tasks are picked at random, but you can give them different weights. The above configuration will make Locust three times more likely to pick `view_items` than `hello_world` or `slow`. When a task has finished executing, the User will then sleep during its wait time (we will talk about this later). After its wait time it’ll pick a new task and keep repeating that.
 
 ### 1.2 Creating Users (threads)
 
-Now lets create a new kind of user, that will send request to `localhost:8080`:
+Now let's create a new kind of user, that will send requests to `localhost:8080`:
 
 ```` py
 class MyUser(HttpUser):
@@ -232,7 +242,7 @@ class MyUser(HttpUser):
     tasks = [MyUserTaskSet]
 ````
 
-Further information about the Users class can be found [here](http://docs.locust.io/en/stable/writing-a-locustfile.html#user-class)
+Further information about the `User` class can be found [here](http://docs.locust.io/en/stable/writing-a-locustfile.html#user-class)
 
 ### 1.3 Creating Test Shapes
 
@@ -266,8 +276,9 @@ class MyLoadTestShape(LoadTestShape):
             return None
 ```
 
-In this example, for every instance of the test there will be a maximum number of 50 users, which increase at a rate of 2 users per second. So in the beginning of the test there are 0 users, after 25 seconds, there are 50 users. And since this method returns None after 60 seconds, than the test will automatically stop.
-### 1.4 Wrapping it up all together
+In this example, for every instance of the test, there will be a maximum number of 50 users, which increase at a rate of 2 users per second. So at the beginning of the test there are 0 users, after 25 seconds, there are 50 users. And since this method returns `None` after 60 seconds, then the test will automatically stop.
+
+### 1.4 Wrapping it up altogether
 
 Place all this the code in a file named `locustfile.py` in your current directory and run `locust`:
 
@@ -291,7 +302,7 @@ Once you’ve started Locust, open up a browser and point it to http://localhost
 
 Point the test at our simple Python web server and try it out!
 
-The following screenshots show what it might look like when running this test targeting 50 concurrent users with a ramp up speed of 2 users/s, during 60 seconds.
+The following screenshots show what it might look like when running this test targeting 50 concurrent users with a ramp-up the speed of 2 users/s, during 60 seconds.
 
 ![Test1 statistics](docs/img/test1_statistics.png)
 
@@ -311,7 +322,7 @@ Number of users:
 
 An e-commerce system is set to launch in the near future.
 
-The developers of this website have created a test environment just for us ❤️.
+The developers of this website have created a test environment just for us. ❤️
 This environment is available at: https://www.demoblaze.com/.
 
 After some discussion with the store owners, they estimate the following system activity:
@@ -335,7 +346,7 @@ The owner of this system told us that it had the following non-functional perfor
 
 ---
 
-**2.** During black-friday (which lasts for 24 hours) the system's usage is expected to grow 100% (100 online users and about 60 requests per second). During this time, the system should reply successfully to at least 95% of incoming requests.
+**2.** During Black Friday (which lasts for 24 hours) the system's usage is expected to grow 100% (100 online users and about 60 requests per second). During this time, the system should reply successfully to at least 95% of incoming requests.
 
 <details>
     <summary>💡 Hint</summary>
@@ -344,19 +355,18 @@ The owner of this system told us that it had the following non-functional perfor
 
 ---
 
-**3.** Besides black friday, the store also does some flash sales that last about 1 hour. These flash sales usually happen 6 times a day and causes the website's activity to grow 300%. During this time the system should be able to reply successfully to at least 90% of incoming requests.
+**3.** Besides Black Friday, the store also does some flash sales that last about 1 hour. These flash sales usually happen 6 times a day and cause the website's activity to grow 300%. During this time the system should be able to reply successfully to at least 90% of incoming requests.
 
 <details>
     <summary>💡 Hint</summary>
-    In this case developing a spike test may be the best testing approach!
+    In this case, developing a spike test may be the best testing approach!
 </details>
 
 ---
 
+However, the owner is not entirely sure that these requirements are met and needs you to test them. For each non-functional requirement, write a performance test using the locust library.
 
-However the owner is not entirely sure that these requirements are met and needs you to test them. For each non-functional requirement, write a performance test using the locust library.
-
-You can find hints after each requirement and a guide to some of the tasks bellow to help you if you want!
+You can find hints after each requirement and a guide to some of the tasks below to help you if you want!
 
 ### 3.2 Challenge
 
@@ -368,7 +378,7 @@ Find out when the system stops answering more than 50% of incoming requests!
 
 ![Load Test Curve](docs/img/load_test.png)
 
-One of the key part of load testing is to never go over the threshold line. So read the exercise description to carefully about this topic.
+One of the key parts of load testing is to never go over the threshold line. So carefully read the exercise description about this topic.
 
 Moreover, it is necessary to keep a constant flow of system activity over a considerable amount of time, after that it will die down.
 
@@ -400,13 +410,13 @@ class LoadStagesShape(LoadTestShape):
 ![Stress Test Curve](docs/img/stress_test.png)
 
 
-Same as Load test, just increase the number of users OR decrease the `wait_time` between user tasks.
+Same as the Load test, just increase the number of users OR decrease the `wait_time` between user tasks.
 
 ## 3. Spike Test Guide
 
 ![Spike Test Curve](docs/img/spike_test.png)
 
-When performing spike test you have system activity peaks that occur over very short time periods. The following examples shows a simple way to achieve this behavior, but we believe you can do better!
+When performing a Spike test you have system activity peaks that occur over very short time periods. The following example shows a simple way to achieve this behavior, but we believe you can do better! 👏
 
 ```python
 class SpikeStagesShape(LoadTestShape):
