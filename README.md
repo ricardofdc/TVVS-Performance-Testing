@@ -247,7 +247,7 @@ class MyLoadTestShape(LoadTestShape):
     # max number of users
     max_users = 50
     # Number of users to start/stop per second
-    spawn_rate = 5
+    spawn_rate = 2
 
     # the tick() method returns either:
     #  - a tuple containing:
@@ -266,7 +266,7 @@ class MyLoadTestShape(LoadTestShape):
             return None
 ```
 
-In this example, for every instance of the test there will be a maximum number of 50 users, which increase at a rate of 5 users per second. So in the beginning of the test there are 0 users, after 10 seconds, there are 50 users. And since this method returns None after 60 seconds, than the test will automatically stop.
+In this example, for every instance of the test there will be a maximum number of 50 users, which increase at a rate of 2 users per second. So in the beginning of the test there are 0 users, after 25 seconds, there are 50 users. And since this method returns None after 60 seconds, than the test will automatically stop.
 ### 1.4 Wrapping it up all together
 
 Place all this the code in a file named `locustfile.py` in your current directory and run `locust`:

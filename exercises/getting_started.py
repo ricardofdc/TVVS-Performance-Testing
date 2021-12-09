@@ -8,9 +8,6 @@ class MyUserTaskSet(TaskSet):
     def on_start(self):
         self.client.post("/login", json={"username":"foo", "password":"bar"})
 
-    # Methods decorated with @task are the core of your locust file. 
-    # For every running user, Locust creates a greenlet (micro-thread), 
-    # that will call those methods.
     @task
     def hello_world(self):
         self.client.get("/hello")
@@ -33,23 +30,9 @@ class MyUserTaskSet(TaskSet):
 class MyUser(HttpUser):
     # default host
     host = "http://localhost:8080"
-    
-    # Here we will define the waiting time between the user's tasks
-    #
-    # With `wait_time` = constant(0.5) this user will execute 
-    # its tasks with constant interval of 0.5 seconds between each
-    # task.
-    #
-    # Another way we can specify the wait time is with
-    # between(). With `wait_time` = between(1, 5), the user
-    # will execute its tasks with a random interval between 1
-    # and 5 seconds.
+
     wait_time = constant(0.5)
 
-    # The tasks array defines the tasks that will be executed
-    # by this user. In this case, the array as an element which
-    # is an instance of MyUserTaskSet. So this user will execute
-    # the tasks defined in the MyUserTaskSet class
     tasks = [MyUserTaskSet]
 
 class MyLoadTestShape(LoadTestShape):
@@ -58,7 +41,7 @@ class MyLoadTestShape(LoadTestShape):
     # max number of users
     max_users = 50
     # Number of users to start/stop per second
-    spawn_rate = 5
+    spawn_rate = 2
 
     # the tick() method returns either:
     #  - a tuple containing:
