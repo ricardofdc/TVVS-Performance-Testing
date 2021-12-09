@@ -169,7 +169,6 @@ Lets define the tasks that the User will perform in this service:
 
 ```` py
 from locust import TaskSet, HttpUser, constant
-from tasks import DemoBlazeUserUserTaskSet
 import time
 
 class MyUserTaskSet(TaskSet):
