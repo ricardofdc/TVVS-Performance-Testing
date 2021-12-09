@@ -202,7 +202,7 @@ class MyUserTaskSet(TaskSet):
 
 ````
 
-We’ve declared two tasks by decorating two methods with `@task`, one of which has been given a higher weight (3). When our `MyUser` runs it’ll pick one of the declared tasks - in this case either `hello_world` or `view_items` - and execute it. Tasks are picked at random, but you can give them different weighting. The above configuration will make Locust three times more likely to pick `view_items` than `hello_world`. When a task has finished executing, the User will then sleep during it’s wait time (we will talk about this later). After it’s wait time it’ll pick a new task and keep repeating that.
+We’ve declared three tasks by decorating three methods with `@task`, one of which has been given a higher weight (3). When our `MyUser` runs it’ll pick one of the declared tasks - in this case either `hello_world` or `view_items` - and execute it. Tasks are picked at random, but you can give them different weighting. The above configuration will make Locust three times more likely to pick `view_items` than `hello_world`. When a task has finished executing, the User will then sleep during it’s wait time (we will talk about this later). After it’s wait time it’ll pick a new task and keep repeating that.
 
 ### 1.2 Creating Users (threads)
 
