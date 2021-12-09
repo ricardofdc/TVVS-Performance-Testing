@@ -309,15 +309,21 @@ Number of users:
 
 ## 3. Test E-Commerce System
 
-An e-commerce system has launched about a week ago (https://www.demoblaze.com/), and after the first week the following data was collected:
+An e-commerce system is set to launch in the near future.
+
+The developers of this website have created a test environment just for us ❤️.
+This environment is available at: https://www.demoblaze.com/.
+
+After some discussion with the store owners, they estimate the following system activity:
 
 - Average online users: **50**
 - Average requests per second: **30**
-- The average user's behaviour is already set up for you in `exercises/tasks.py`, but feel free to change it.
+
+⚠️ The average user's behavior is already set up for you in `exercises/tasks.py`, but feel free to change it ⚠️
 
 ### 3.1 System Requirements
 
-The owner of this system told us that it has the following non-functional performance requirements:
+The owner of this system told us that it had the following non-functional performance requirements:
 
 **1.** The system must successfully answer at least 98% of incoming requests during an average load.
 
@@ -352,7 +358,6 @@ However the owner is not entirely sure that these requirements are met and needs
 
 You can find hints after each requirement and a guide to some of the tasks bellow to help you if you want!
 
-
 ### 3.2 Challenge
 
 Find out when the system stops answering more than 50% of incoming requests!
@@ -360,6 +365,14 @@ Find out when the system stops answering more than 50% of incoming requests!
 # Exercise guides
 
 ## 1. Load Test Guide
+
+![Load Test Curve](docs/img/load_test.png)
+
+One of the key part of load testing is to never go over the threshold line. So read the exercise description to carefully about this topic.
+
+Moreover, it is necessary to keep a constant flow of system activity over a considerable amount of time, after that it will die down.
+
+Here is an example of such behavior:
 
 ```python
 class LoadStagesShape(LoadTestShape):
@@ -384,9 +397,16 @@ class LoadStagesShape(LoadTestShape):
 ```
 ## 2. Stress Test Guide
 
+![Stress Test Curve](docs/img/stress_test.png)
+
+
 Same as Load test, just increase the number of users OR decrease the `wait_time` between user tasks.
 
 ## 3. Spike Test Guide
+
+![Spike Test Curve](docs/img/spike_test.png)
+
+When performing spike test you have system activity peaks that occur over very short time periods. The following examples shows a simple way to achieve this behavior, but we believe you can do better!
 
 ```python
 class SpikeStagesShape(LoadTestShape):
@@ -425,12 +445,7 @@ class SpikeStagesShape(LoadTestShape):
 
 ## 4. Breakpoint Test Guide
 
-Challenge: Find out when the system stops answering more than 50% of incoming requests!
-
-<details>
-    <summary>💡 Hint</summary>
-    Have you tried looking at breakpoint tests! 🤔
-</details>
+![Breakpoint Test Curve](docs/img/breakpoint_test.png)
 
 Keep increasing users over time. How about something like this:
 
