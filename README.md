@@ -291,7 +291,7 @@ Once you’ve started Locust, open up a browser and point it to http://localhost
 
 Point the test at our simple Python web server and try it out!
 
-The following screenshots show what it might look like when running this test targeting 50 concurrent users with a ramp up speed of 1 users/s.
+The following screenshots show what it might look like when running this test targeting 50 concurrent users with a ramp up speed of 2 users/s, during 60 seconds.
 
 ![Test1 statistics](docs/img/test1_statistics.png)
 

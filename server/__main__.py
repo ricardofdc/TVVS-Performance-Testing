@@ -10,7 +10,7 @@ class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
         # bad route
         if (self.path == '/slow'):
-            time.sleep(0.5)
+            time.sleep(1)
 
         # reply normally
         self.send_response(200)
