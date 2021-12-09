@@ -168,7 +168,7 @@ A Locust test is essentially a Python program. This makes it very flexible and p
 Lets define the tasks that the User will perform in this service:
 
 ```` py
-from locust import TaskSet, HttpUser, constant
+from locust import TaskSet, HttpUser, LoadTestShape, task, constant
 import time
 
 class MyUserTaskSet(TaskSet):
