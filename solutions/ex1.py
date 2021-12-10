@@ -2,14 +2,14 @@ from locust import LoadTestShape, FastHttpUser, between
 from tasks import DemoBlazeUserUserTaskSet
 
 class DemoBlazeTestShape(LoadTestShape):
-    # test will run for 120 seconds
-    time_limit = 120
+    # test will run for 1 hour
+    time_limit = 60 * 60
     # max number of users
     max_users = 30
-    # curve starts going down after 100 seconds
-    end_load =  100
+    # curve starts going down after 59.5 minutes
+    end_load =  59 * 60 + 30
     # Number of users to start/stop per second
-    spawn_rate = 5
+    spawn_rate = 1
 
     def tick(self):
         run_time = round(self.get_run_time())
